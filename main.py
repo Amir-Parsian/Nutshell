@@ -7,6 +7,7 @@ def d_point_line(a, b, p):
     # Distance of a point from a line. a and b are intercept and slope of the line p is a pandas data frame. Each row represent a point. The first column contains xs and the second column contains ys. Equation of the lin is given as y = ax + b we can rewrite as ax - y + b = 0 And the distance is calculated as follows:
     # ∣𝑎𝑥𝑝−𝑦𝑝+𝑏∣/(𝑎^2+1)
     import pandas as pd
+    import numpy as np
     import math
     return p.join(pd.DataFrame({'Distance': abs(a * p['x'] - p['y'] + b) / math.sqrt(a ** 2 + 1)}))
 
