@@ -12,9 +12,21 @@ def d_point_line(a, b, p):
     return p.join(pd.DataFrame({'Distance': abs(a * p['x'] - p['y'] + b) / math.sqrt(a ** 2 + 1)}))
 
 
+
+def dy_point_line(a, b, p):
+    # d_point_line(a,b,p):
+    # dy of a point from a line. a and b are intercept and slope of the line p is a pandas data frame. Each row represent a point. The first column contains xs and the second column contains ys. Equation of the lin is given as y = ax + b we can rewrite as ax - y + b = 0 And the distance is calculated as follows:
+    # |ax+b - y|
+    import pandas as pd
+    import numpy as np
+    import math
+    return p.join(pd.DataFrame({'Distance': abs(a * p['x'] + b - p['y'])}))
+
+
 def ms(a, b, p):
     import numpy as np
-    results = d_point_line(a, b, p)
+    results = dy_point_line(a, b, p)
+    #results = d_point_line(a, b, p)
     return np.mean(results['Distance'] ** 2)
 
 
@@ -25,8 +37,8 @@ def visualize_ab_min(a, b, p, N):
     # intercept and slop, it calculate the distances of points from the line. The results are ploted in 3D surface
     # and it can be seen the it gives a minimum at the intercept and slop of intercept.
     
-    a_vector = np.linspace(.5 * a, 2 * a, N)
-    b_vector = np.linspace(.5 * b, 2 * b, N)
+    a_vector = np.linspace(.1* a, 10 * a, N)
+    b_vector = np.linspace(.1 * b, 10 * b, N)
     A, B = np.meshgrid(a_vector, b_vector)
     Z = np.zeros(np.shape(A))
     for i in range(N):
@@ -36,7 +48,7 @@ def visualize_ab_min(a, b, p, N):
     fig = plt.figure()
     ax = fig.gca(projection='3d')
 
-    ax.plot_surface(A, B, Z, cmap=cm.coolwarm, linewidth=0, antialiased=False)
+    ax.plot_surface(A, B, Z, cmap=cm.jet, linewidth=0, antialiased=False)
     plt.show()
 
 
@@ -60,5 +72,5 @@ if __name__ == '__main__':
     plt.plot([minX, maxX], [a * minX + b, a * maxX + b], 'r')
 
     d_point_line(1, 2, p)
-    N = 10
+    N = 50
     visualize_ab_min(a, b, p, N)
